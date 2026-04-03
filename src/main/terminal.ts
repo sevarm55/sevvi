@@ -41,6 +41,9 @@ export function createTerminalSession(id: string, promptStyle: string = 'powerli
       LANG: process.env.LANG || 'en_US.UTF-8',
       SEVVI: '1',
       SEVVI_PROMPT_STYLE: promptStyle,
+      SEVVI_SETUP: path.join(app.isPackaged
+        ? path.join(process.resourcesPath, 'shell', 'sevvi-setup.zsh')
+        : path.join(__dirname, '..', '..', 'src', 'shell', 'sevvi-setup.zsh')),
       SEVVI_PROMPT: path.join(app.isPackaged
         ? path.join(process.resourcesPath, 'shell', 'sevvi-prompt.zsh')
         : path.join(__dirname, '..', '..', 'src', 'shell', 'sevvi-prompt.zsh')),
@@ -48,6 +51,14 @@ export function createTerminalSession(id: string, promptStyle: string = 'powerli
   });
 
   sessions.set(id, { id, process: ptyProcess });
+
+  // Auto-source Sevvi prompt and setup on shell start
+  const setupCmd = `[[ -n "$SEVVI_SETUP" && -f "$SEVVI_SETUP" ]] && source "$SEVVI_SETUP"; [[ -n "$SEVVI_PROMPT" && -f "$SEVVI_PROMPT" ]] && source "$SEVVI_PROMPT"\n`;
+  setTimeout(() => {
+    if (sessions.has(id)) {
+      ptyProcess.write(setupCmd);
+    }
+  }, 500);
 
   ptyProcess.onData((data: string) => {
     const { BrowserWindow } = require('electron');

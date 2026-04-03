@@ -1,8 +1,11 @@
 #!/usr/bin/env zsh
-# Sevvi Prompt Engine — 21 unique styles
+# Sevvi Prompt Engine — 41 unique styles
 unset POWERLEVEL9K_INSTANT_PROMPT
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off 2>/dev/null
 zmodload zsh/datetime 2>/dev/null
+
+# Run first-time setup if needed
+[[ -n "$SEVVI_SETUP" && -f "$SEVVI_SETUP" ]] && source "$SEVVI_SETUP"
 
 # ── Powerline glyphs ────────────────────────
 typeset -g _R=$'\uE0B0' _RS=$'\uE0B1' _RR=$'\uE0B4'
