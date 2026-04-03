@@ -25,6 +25,12 @@
 
 Download the latest `.dmg` from [Releases](https://github.com/sevarm55/sevvi/releases).
 
+> **macOS Gatekeeper:** Since Sevvi is not code-signed, macOS may block it on first launch. Run this in Terminal to fix:
+> ```bash
+> xattr -cr /Applications/Sevvi.app
+> ```
+> Then open Sevvi normally.
+
 ### Build from source
 
 ```bash
