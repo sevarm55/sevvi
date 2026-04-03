@@ -5,14 +5,14 @@ directories:
 mac:
   category: public.app-category.developer-tools
   icon: assets/icon.icns
+  artifactName: Sevvi-${version}-arm64.${ext}
   target:
-    - target: dir
+    - target: dmg
       arch:
         - arm64
   darkModeSupport: true
 dmg:
   title: Sevvi
-  artifactName: Sevvi-${version}.${ext}
 files:
   - dist/**/*
   - node_modules/**/*

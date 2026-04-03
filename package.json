@@ -6,7 +6,8 @@
   "scripts": {
     "build:ts": "tsc",
     "dev": "tsc && electron .",
-    "build": "tsc && electron-builder --mac",
+    "build": "tsc && electron-builder --mac --publish never",
+    "build:dir": "tsc && electron-builder --mac --dir",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
