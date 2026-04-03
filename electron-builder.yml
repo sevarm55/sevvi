@@ -1,0 +1,30 @@
+appId: com.sevvi.terminal
+productName: Sevvi
+directories:
+  output: release
+mac:
+  category: public.app-category.developer-tools
+  icon: assets/icon.icns
+  target:
+    - target: dir
+      arch:
+        - arm64
+  darkModeSupport: true
+dmg:
+  title: Sevvi
+  artifactName: Sevvi-${version}.${ext}
+files:
+  - dist/**/*
+  - node_modules/**/*
+  - "!node_modules/**/*.{ts,map,md}"
+  - src/renderer/**/*
+extraResources:
+  - from: src/shell
+    to: shell
+    filter:
+      - "*.zsh"
+  - from: src/renderer/fonts
+    to: fonts
+    filter:
+      - "*.ttf"
+asar: true

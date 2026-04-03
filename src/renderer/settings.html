@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sevvi Settings</title>
+  <link rel="stylesheet" href="styles/terminal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #16161a; color: #e8e8ef; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; height: 100%; }
+    #drag-bar { height: 38px; -webkit-app-region: drag; display: flex; align-items: center; justify-content: center; }
+    #drag-bar span { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #666; }
+    #settings-wrap { height: calc(100% - 38px); overflow-y: auto; padding: 0 24px 24px; }
+    #settings-wrap::-webkit-scrollbar { width: 6px; }
+    #settings-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="drag-bar"><span>SETTINGS</span></div>
+  <div id="settings-wrap">
+    <div class="settings-section">
+      <h3>Appearance</h3>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Cursor Blink</span><span class="setting-desc">Animate cursor blinking</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="cursorBlink" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Cursor Style</span><span class="setting-desc">Shape of the cursor</span></div>
+        <select data-setting="cursorStyle" class="setting-select"><option value="bar">Bar</option><option value="block">Block</option><option value="underline">Underline</option></select>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Font Size</span><span class="setting-desc">Terminal font size (8-32)</span></div>
+        <input type="number" data-setting="fontSize" class="setting-number" min="8" max="32" value="14">
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Line Height</span><span class="setting-desc">Line spacing (1.0 - 2.0)</span></div>
+        <input type="number" data-setting="lineHeight" class="setting-number" min="1.0" max="2.0" step="0.05" value="1.25">
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Scrollback</span><span class="setting-desc">Lines kept in scroll buffer</span></div>
+        <input type="number" data-setting="scrollback" class="setting-number" min="500" max="100000" step="500" value="10000">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Window</h3>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Minimal Mode</span><span class="setting-desc">Hide everything, only terminal</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="minimalMode"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Hide Traffic Lights</span><span class="setting-desc">Show on hover only</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="hideTrafficLights"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Show Sidebar</span><span class="setting-desc">Sessions panel on the left</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="showSidebar" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Show Status Bar</span><span class="setting-desc">Info bar at the bottom</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="showStatusBar" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Show Tab Bar</span><span class="setting-desc">Tabs at the top</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="showTabBar" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Opacity</span><span class="setting-desc">Window transparency</span></div>
+        <div class="setting-range-wrap">
+          <input type="range" data-setting="opacity" class="setting-range" min="0.2" max="1.0" step="0.05" value="0.85">
+          <span class="setting-range-value" data-for="opacity">85%</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Blur</span><span class="setting-desc">Background blur intensity</span></div>
+        <div class="setting-range-wrap">
+          <input type="range" data-setting="blur" class="setting-range" min="0" max="80" step="5" value="40">
+          <span class="setting-range-value" data-for="blur">40px</span>
+        </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Terminal Padding Top</span><span class="setting-desc">Push terminal down (px)</span></div>
+        <div class="setting-range-wrap">
+          <input type="range" data-setting="terminalPaddingTop" class="setting-range" min="0" max="60" step="2" value="0">
+          <span class="setting-range-value" data-for="terminalPaddingTop">0px</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Terminal Padding Left</span><span class="setting-desc">Push terminal right (px)</span></div>
+        <div class="setting-range-wrap">
+          <input type="range" data-setting="terminalPaddingLeft" class="setting-range" min="0" max="60" step="2" value="0">
+          <span class="setting-range-value" data-for="terminalPaddingLeft">0px</span>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Terminal</h3>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Clickable Links</span><span class="setting-desc">URLs become clickable</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="webLinks" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Copy on Select</span><span class="setting-desc">Auto-copy text when selected</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="copyOnSelect"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><span class="setting-label">Bell Sound</span><span class="setting-desc">Play sound on terminal bell</span></div>
+        <label class="toggle"><input type="checkbox" data-setting="bellSound"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Prompt Style</h3>
+      <p class="settings-hint">Restart sessions to apply</p>
+      <div id="prompt-grid" class="prompt-grid"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Theme Presets</h3>
+      <div id="theme-grid" class="theme-grid"></div>
+    </div>
+  </div>
+
+  <script src="../../dist/renderer/settings-ui.js"></script>
+</body>
+</html>

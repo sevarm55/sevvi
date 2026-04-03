@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sevvi</title>
+  <link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+  <link rel="stylesheet" href="styles/terminal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcome-overlay">
+    <div id="welcome">
+      <div id="welcome-logo">
+        <div id="welcome-glow"></div>
+        <h1 id="welcome-title">SEVVI</h1>
+        <div id="welcome-tagline">
+          <span class="tagline-line"></span>
+          <span class="tagline-text">terminal reimagined</span>
+          <span class="tagline-line"></span>
+        </div>
+      </div>
+
+      <div id="welcome-features">
+        <div class="welcome-feature" style="--delay: 0">
+          <div class="feature-icon">&#x25E8;</div>
+          <div class="feature-text">
+            <strong>Split Panes</strong>
+            <span>Work on multiple tasks side by side</span>
+          </div>
+          <div class="feature-shortcut">&#x2318;D</div>
+        </div>
+        <div class="welcome-feature" style="--delay: 1">
+          <div class="feature-icon">&#x2318;</div>
+          <div class="feature-text">
+            <strong>Command Palette</strong>
+            <span>Quick access to every action</span>
+          </div>
+          <div class="feature-shortcut">&#x2318;P</div>
+        </div>
+        <div class="welcome-feature" style="--delay: 2">
+          <div class="feature-icon">&#x2699;</div>
+          <div class="feature-text">
+            <strong>Fully Customizable</strong>
+            <span>Themes, opacity, blur, minimal mode</span>
+          </div>
+          <div class="feature-shortcut">&#x2318;,</div>
+        </div>
+        <div class="welcome-feature" style="--delay: 3">
+          <div class="feature-icon">&#x26A1;</div>
+          <div class="feature-text">
+            <strong>Blazing Fast</strong>
+            <span>GPU-accelerated rendering with xterm.js</span>
+          </div>
+          <div class="feature-shortcut">&nbsp;</div>
+        </div>
+      </div>
+
+      <button id="welcome-start" onclick="document.getElementById('welcome-overlay').remove()">Get Started</button>
+      <label id="welcome-skip-wrap">
+        <input type="checkbox" id="welcome-skip-check"> Don't show again
+      </label>
+    </div>
+  </div>
+
+  <script>
+    // Bulletproof welcome dismiss — runs before any other JS
+    (function() {
+      if (localStorage.getItem('sevvi-welcome-done')) {
+        var el = document.getElementById('welcome-overlay');
+        if (el) el.remove();
+        return;
+      }
+      document.addEventListener('keydown', function handler(e) {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          var el = document.getElementById('welcome-overlay');
+          if (el) el.remove();
+          document.removeEventListener('keydown', handler);
+        }
+      });
+    })();
+  </script>
+
+  <div id="app">
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div id="sidebar-header">
+        <h1 id="sidebar-brand">SEVVI</h1>
+      </div>
+      <div id="sidebar-sessions"></div>
+      <div id="sidebar-footer">
+        <button id="new-session-btn">+ New Session</button>
+        <button id="shortcuts-btn">&#x2328; Shortcuts</button>
+        <button id="settings-btn">&#x2699; Settings</button>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div id="main">
+      <div id="titlebar">
+        <div id="tab-bar"></div>
+      </div>
+      <div id="terminals"></div>
+      <div id="statusbar">
+        <div id="statusbar-left">
+          <div class="status-item">
+            <span class="status-dot green"></span>
+            <span id="status-shell">zsh</span>
+          </div>
+          <div class="status-item" id="status-git-wrap" style="display:none">
+            <span style="color: var(--accent);">&#xE725;</span>
+            <span id="status-git">main</span>
+          </div>
+          <div class="status-item">
+            <span id="status-path">~</span>
+          </div>
+        </div>
+        <div id="statusbar-right">
+          <div class="status-item">
+            <span id="status-size">80x24</span>
+          </div>
+          <div class="status-item">
+            <span id="status-time"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shortcuts Overlay -->
+  <div id="shortcuts-overlay">
+    <div id="shortcuts-card">
+      <h2 class="shortcuts-title">SHORTCUTS</h2>
+      <div class="shortcuts-grid">
+        <div class="shortcut-group">
+          <h3>Sessions</h3>
+          <div class="shortcut-row"><span>New Tab</span><div class="keys"><kbd>&#x2318;</kbd><kbd>T</kbd></div></div>
+          <div class="shortcut-row"><span>Close Tab</span><div class="keys"><kbd>&#x2318;</kbd><kbd>W</kbd></div></div>
+          <div class="shortcut-row"><span>Next Tab</span><div class="keys"><kbd>&#x2318;</kbd><kbd>&#x21E7;</kbd><kbd>]</kbd></div></div>
+          <div class="shortcut-row"><span>Previous Tab</span><div class="keys"><kbd>&#x2318;</kbd><kbd>&#x21E7;</kbd><kbd>[</kbd></div></div>
+        </div>
+        <div class="shortcut-group">
+          <h3>Panes</h3>
+          <div class="shortcut-row"><span>Split Horizontal</span><div class="keys"><kbd>&#x2318;</kbd><kbd>D</kbd></div></div>
+          <div class="shortcut-row"><span>Split Vertical</span><div class="keys"><kbd>&#x2318;</kbd><kbd>&#x21E7;</kbd><kbd>D</kbd></div></div>
+          <div class="shortcut-row"><span>Navigate Panes</span><div class="keys"><kbd>&#x2318;</kbd><kbd>&#x2325;</kbd><kbd>&#x2190;&#x2191;&#x2192;&#x2193;</kbd></div></div>
+          <div class="shortcut-row"><span>Next Pane</span><div class="keys"><kbd>&#x2318;</kbd><kbd>&#x2325;</kbd><kbd>N</kbd></div></div>
+        </div>
+        <div class="shortcut-group">
+          <h3>Window</h3>
+          <div class="shortcut-row"><span>Toggle Sidebar</span><div class="keys"><kbd>&#x2318;</kbd><kbd>B</kbd></div></div>
+          <div class="shortcut-row"><span>Settings</span><div class="keys"><kbd>&#x2318;</kbd><kbd>,</kbd></div></div>
+          <div class="shortcut-row"><span>Command Palette</span><div class="keys"><kbd>&#x2318;</kbd><kbd>P</kbd></div></div>
+          <div class="shortcut-row"><span>Shortcuts</span><div class="keys"><kbd>&#x2318;</kbd><kbd>/</kbd></div></div>
+        </div>
+        <div class="shortcut-group">
+          <h3>Zoom</h3>
+          <div class="shortcut-row"><span>Zoom In</span><div class="keys"><kbd>&#x2318;</kbd><kbd>=</kbd></div></div>
+          <div class="shortcut-row"><span>Zoom Out</span><div class="keys"><kbd>&#x2318;</kbd><kbd>-</kbd></div></div>
+          <div class="shortcut-row"><span>Reset Zoom</span><div class="keys"><kbd>&#x2318;</kbd><kbd>0</kbd></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette -->
+  <div id="command-palette-overlay">
+    <div id="command-palette">
+      <div id="palette-input-wrap">
+        <span id="palette-icon">&#x2318;</span>
+        <input id="palette-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+      </div>
+      <div id="palette-results"></div>
+    </div>
+  </div>
+
+  <script src="../../node_modules/@xterm/xterm/lib/xterm.js"></script>
+  <script src="../../node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
+  <script src="../../node_modules/@xterm/addon-web-links/lib/addon-web-links.js"></script>
+  <script src="../../dist/renderer/tabs.js"></script>
+</body>
+</html>
